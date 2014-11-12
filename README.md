@@ -1,8 +1,10 @@
 #COUNTU_UDF Excel Module
 
-A set of user defined functions for Excel which add the ability to count the number of items in a given range against as set of criteria whilst ignoring duplicates.
+This COUNTU_UDF module adds a set of user defined functions for Excel which add the ability to count the number of items in a given range against as set of criteria whilst ignoring duplicates.
 
-The module adds the following User Defined Functions COUNTU, COUNTUIF, COUNTUIFS which count the number of items in a given range excluding duplicates.
+* COUNTU, 
+* COUNTUIF
+* COUNTUIFS
 
 **The module requires a reference to the Microsoft Scripting Runtime library.**
 
