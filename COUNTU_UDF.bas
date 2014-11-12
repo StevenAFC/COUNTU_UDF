@@ -44,9 +44,13 @@ Public Function COUNTU(Target As Range)
     
         If Not Values.Exists(TargetContainer(i, 1)) Then
         
-            If TargetContainer(i, 1) <> "" Then
-        
-                Values.Add TargetContainer(i, 1), 1
+            If Not IsError(TargetContainer(i, 1)) Then
+
+                If TargetContainer(i, 1) <> "" Then
+            
+                    Values.Add TargetContainer(i, 1), 1
+                
+                End If
             
             End If
         
