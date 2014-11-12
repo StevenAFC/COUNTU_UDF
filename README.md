@@ -2,11 +2,13 @@
 
 A set of user defined functions for Excel which add the ability to count the number of items in a given range against as set of criteria whilst ignoring duplicates.
 
-The module addes the following User Defined Functions COUNTU, COUNTUIF, COUNTUIFS which count the number of items in a given range excluding duplicates.
+The module adds the following User Defined Functions COUNTU, COUNTUIF, COUNTUIFS which count the number of items in a given range excluding duplicates.
 
 **The module requires a reference to the Microsoft Scripting Runtime library.**
 
-##COUNTU
+##Functions
+
+###COUNTU
 
 Counts the number of cells in a range excluding any duplicates
 found.
@@ -16,7 +18,7 @@ found.
 =COUNTU(range)
 ```
 
-##COUNTUIF
+###COUNTUIF
 
 Counts the number of cells in a range that meet the given
 condition excluding any duplicates found in the
@@ -27,7 +29,7 @@ duplicate_range.
 =COUNTUIF(duplicate_range, criteria, criteria_range)
 ```
 
-##COUNTUIFS
+###COUNTUIFS
 
 Counts the number of cells specified by a given set of
 conditions or criteria excluding any duplicates found in the
@@ -37,3 +39,11 @@ duplicate_range.
 ```
 =COUNTUIFS(duplicate_range, criteria_range1, criteria1, …)
 ```
+
+##Known Limitations
+
+When using traditional Excel functions such as COUNTIF you are able to use conditional comparison criteria such as:
+```
+=COUNTIF(A1:A15,">"&100)
+```
+Currently this is not supported in this module.
