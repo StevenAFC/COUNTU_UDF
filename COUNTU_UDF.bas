@@ -3,7 +3,7 @@ Attribute VB_Name = "COUNTU_UDF"
 '*
 '*                      COUNTU UDF Module
 '*
-'* Module which add the following User Defined Functions COUNTU,
+'* Module which adds the following User Defined Functions COUNTU,
 '* COUNTUIF, COUNTUIFS which count the number of items in a given
 '* range excluding duplicates.
 '*
