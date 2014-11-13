@@ -41,11 +41,3 @@ duplicate_range.
 ```
 =COUNTUIFS(duplicate_range, criteria_range1, criteria1, …)
 ```
-
-##Known Limitations
-
-When using traditional Excel functions such as COUNTIF you are able to use conditional comparison criteria such as:
-```
-=COUNTIF(A1:A15,">"&100)
-```
-Currently this is not supported in this module.
