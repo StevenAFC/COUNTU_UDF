@@ -1,9 +1,8 @@
-Attribute VB_Name = "COUNTU_UDF"
 '****************************************************************
 '*
 '*                      COUNTU UDF Module
 '*
-'* Module which adds the following User Defined Functions COUNTU,
+'* Module which add the following User Defined Functions COUNTU,
 '* COUNTUIF, COUNTUIFS which count the number of items in a given
 '* range excluding duplicates.
 '*
@@ -40,7 +39,7 @@ Public Function COUNTU(ParamArray conditions() As Variant)
     
     For Each target In conditions
     
-        TargetContainer = target.Value
+        TargetContainer = target.value
 
         Dim i As Long
         
@@ -126,14 +125,14 @@ Public Function COUNTUIFS(CountRange As Range, ParamArray conditions() As Varian
     
         Set CriteriaRange = conditions(i)
     
-        Container(i / 2) = CriteriaRange.Value
+        Container(i / 2) = CriteriaRange.value
     
     Next i
     
     Set CriteriaRange = Nothing
     
     Dim CellRangeContainer() As Variant
-    CellRangeContainer() = CountRange.Value
+    CellRangeContainer() = CountRange.value
 
     Set Values = New Dictionary
 
@@ -151,8 +150,10 @@ Public Function COUNTUIFS(CountRange As Range, ParamArray conditions() As Varian
                 
                     passed = False
                     
-                ElseIf Not Container(i / 2)(x, 1) = conditions(i + 1) Then
-    
+                    Exit For
+                    
+                ElseIf Not compare(Container(i / 2)(x, 1), conditions(i + 1)) Then
+                    
                     passed = False
                     
                     Exit For
@@ -175,4 +176,45 @@ Public Function COUNTUIFS(CountRange As Range, ParamArray conditions() As Varian
 
     Set Values = Nothing
     
+End Function
+
+'****************************************************************
+'*
+'* Compare
+'*
+'* Enables the use of comparison operators for both strings and
+'* numbers
+'*
+'****************************************************************
+Private Function compare(a As Variant, b As Variant) As Boolean
+
+    Dim result As Boolean
+    result = False
+
+    If IsNumeric(a) Then
+        If IsNumeric(b) Then
+                result = a = b
+        Else
+            If Left(b, 2) = ">=" Then
+                result = a >= CDbl(Mid(b, 3))
+            ElseIf Left(b, 2) = "<=" Then
+                result = a <= CDbl(Mid(b, 3))
+            ElseIf Left(b, 1) = "<" Then
+                result = a < CDbl(Mid(b, 2))
+            ElseIf Left(b, 1) = ">" Then
+                result = a > CDbl(Mid(b, 2))
+            ElseIf Left(b, 2) = ">=" Then
+                result = a >= CDbl(Mid(b, 3))
+            ElseIf Left(b, 2) = "<=" Then
+                result = a <= CDbl(Mid(b, 3))
+            Else
+                result = False
+            End If
+        End If
+    Else
+        result = a Like b
+    End If
+    
+    compare = result
+
 End Function
