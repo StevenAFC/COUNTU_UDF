@@ -9,8 +9,8 @@
 '* Module requires a reference to the Microsoft Scripting Runtime
 '* library.
 '*
-'* Version: 1.0
-'* Created: 12-11-2014
+'* Version: 1.1
+'* Created: 13-11-2014
 '*
 '****************************************************************
 
