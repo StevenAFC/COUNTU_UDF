@@ -28,7 +28,7 @@ Option Explicit
 '* =COUNTU(range)
 '*
 '****************************************************************
-Public Function COUNTU(ParamArray conditions() As Variant)
+Public Function COUNTU(ParamArray ranges() As Variant)
 
     Dim Values As Dictionary
     Dim target As Variant
@@ -37,7 +37,7 @@ Public Function COUNTU(ParamArray conditions() As Variant)
     
     Set Values = New Dictionary
     
-    For Each target In conditions
+    For Each target In ranges
     
         TargetContainer = target.value
 
