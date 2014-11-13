@@ -190,8 +190,14 @@ Private Function compare(a As Variant, b As Variant) As Boolean
 
     Dim result As Boolean
     result = False
-
-    If IsNumeric(a) Then
+    
+    If Not IsNumeric(a) Or a = Empty Then
+        If Left(b, 2) = "<>" Then
+            result = a <> Mid(b, 3)
+        Else
+            result = a Like b
+        End If
+    Else
         If IsNumeric(b) Then
                 result = a = b
         Else
@@ -199,20 +205,16 @@ Private Function compare(a As Variant, b As Variant) As Boolean
                 result = a >= CDbl(Mid(b, 3))
             ElseIf Left(b, 2) = "<=" Then
                 result = a <= CDbl(Mid(b, 3))
+            ElseIf Left(b, 2) = "<>" Then
+                result = a <> CDbl(Mid(b, 3))
             ElseIf Left(b, 1) = "<" Then
                 result = a < CDbl(Mid(b, 2))
             ElseIf Left(b, 1) = ">" Then
                 result = a > CDbl(Mid(b, 2))
-            ElseIf Left(b, 2) = ">=" Then
-                result = a >= CDbl(Mid(b, 3))
-            ElseIf Left(b, 2) = "<=" Then
-                result = a <= CDbl(Mid(b, 3))
             Else
                 result = False
             End If
         End If
-    Else
-        result = a Like b
     End If
     
     compare = result
