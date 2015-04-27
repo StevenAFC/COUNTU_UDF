@@ -9,7 +9,7 @@
 '* Module requires a reference to the Microsoft Scripting Runtime
 '* library.
 '*
-'* Version: 1.1
+'* Version: 1.3
 '* Created: 13-11-2014
 '*
 '****************************************************************
@@ -31,27 +31,26 @@ Option Explicit
 Public Function COUNTU(ParamArray ranges() As Variant)
 
     Dim Values As Dictionary
-    Dim target As Variant
-    
-    Dim TargetContainer() As Variant
-    
+    Dim targetRange As Variant
+    Dim trimmedRange As range
+  
     Set Values = New Dictionary
     
-    For Each target In ranges
-    
-        TargetContainer = target.value
+    For Each targetRange In ranges
 
-        Dim i As Long
-        
-        For i = 1 To UBound(TargetContainer)
-        
-            If Not Values.Exists(TargetContainer(i, 1)) Then
-            
-                If Not IsError(TargetContainer(i, 1)) Then
+        Set trimmedRange = TrimRangeToTarget(targetRange, ActiveSheet.UsedRange)
     
-                    If TargetContainer(i, 1) <> "" Then
+        Dim cell As range
+        
+        For Each cell In trimmedRange
+        
+            If Not Values.Exists(cell.Value) Then
+            
+                If Not IsError(cell.Value) Then
+    
+                    If cell.Value <> "" Then
                 
-                        Values.Add TargetContainer(i, 1), 1
+                        Values.Add cell.Value, 1
                     
                     End If
                 
@@ -59,9 +58,11 @@ Public Function COUNTU(ParamArray ranges() As Variant)
             
             End If
             
-        Next i
+        Next cell
+        
+        Set trimmedRange = Nothing
     
-    Next target
+    Next targetRange
     
     COUNTU = Values.Count
 
@@ -82,7 +83,7 @@ End Function
 '* =COUNTUIF(duplicate_range, criteria, criteria_range)
 '*
 '****************************************************************
-Public Function COUNTUIF(CountRange As Range, Criteria As Variant, CriteriaRange As Range)
+Public Function COUNTUIF(CountRange As range, Criteria As Variant, CriteriaRange As range)
     
     COUNTUIF = COUNTUIFS(CountRange, CriteriaRange, Criteria)
     
@@ -101,7 +102,7 @@ End Function
 '* =COUNTUIFS(duplicate_range, criteria_range1, criteria1, …)
 '*
 '****************************************************************
-Public Function COUNTUIFS(CountRange As Range, ParamArray conditions() As Variant)
+Public Function COUNTUIFS(CountRange As range, ParamArray conditions() As Variant)
 
     If (UBound(conditions) + 1) Mod 2 <> 0 Then
     
@@ -116,7 +117,7 @@ Public Function COUNTUIFS(CountRange As Range, ParamArray conditions() As Varian
     Dim i As Integer
     Dim passed As Boolean
     
-    Dim CriteriaRange As Range
+    Dim CriteriaRange As range
     
     Dim Container() As Variant
     ReDim Container(UBound(conditions) / 2)
@@ -125,14 +126,14 @@ Public Function COUNTUIFS(CountRange As Range, ParamArray conditions() As Varian
     
         Set CriteriaRange = conditions(i)
     
-        Container(i / 2) = CriteriaRange.value
+        Container(i / 2) = CriteriaRange.Value
     
     Next i
     
     Set CriteriaRange = Nothing
     
     Dim CellRangeContainer() As Variant
-    CellRangeContainer() = CountRange.value
+    CellRangeContainer() = CountRange.Value
 
     Set Values = New Dictionary
 
@@ -183,7 +184,7 @@ End Function
 '* Compare
 '*
 '* Enables the use of comparison operators for both strings and
-'* numbers
+'* numbers.
 '*
 '****************************************************************
 Private Function compare(a As Variant, b As Variant) As Boolean
@@ -220,3 +221,33 @@ Private Function compare(a As Variant, b As Variant) As Boolean
     compare = result
 
 End Function
+
+'****************************************************************
+'*
+'* TrimRangeToTarget
+'*
+'* Restricts the height and width of the targetRange to the height
+'* and width of the containerRange and returns a resized range.
+'*
+'****************************************************************
+Private Function TrimRangeToTarget(ByVal targetRange As range, ByVal containerRange As range) As range
+
+    Dim tx0, ty0, tx1, ty1 As Long
+    Dim ux1, uy1 As Long
+    Dim x1, y1 As Long
+
+    tx0 = targetRange.Column
+    ty0 = targetRange.Row
+    tx1 = targetRange.Columns.Count + tx0 - 1
+    ty1 = targetRange.Rows.Count + ty0 - 1
+
+    ux1 = containerRange.Columns.Count + containerRange.Column - 1
+    uy1 = containerRange.Rows.Count + containerRange.Row - 1
+
+    If tx1 > ux1 Then x1 = ux1 Else x1 = tx1
+    If ty1 > uy1 Then y1 = uy1 Else y1 = ty1
+      
+    Set TrimRangeToTarget = ActiveSheet.range(Cells(ty0, tx0), Cells(y1, x1))
+
+End Function
+
